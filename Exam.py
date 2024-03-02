@@ -12,6 +12,7 @@ class Bank:
       return
     self.users[name] = User(name, email, password,balance)
     self.users[email]= User(name, email, password,balance)
+    self.total_balance+= balance
     print("Account created successfully for", name)
 
   def get_user(self, name):
@@ -30,7 +31,7 @@ class User:
     self.email= email
     self.password= password
     self.balance = balance
-    bank.total_balance+= balance
+    
     self.transactions = []
 
   def deposit(self, amount):
@@ -66,13 +67,13 @@ class User:
     self.transactions.append(f"Transfer to {recipient}: -{amount}")
     recipient_user.transactions.append(f"Transfer from {self.name}: +{amount}")
 
-  def get_transactions(self):
+  def get_transactions(self,):
     if not self.transactions:
       print("No transactions found")
       return
-    print("Transactions:")
+    print(f"Transactions of:{self.name}")
     for transaction in self.transactions:
-      print(transaction)
+      print(transaction )
 
   def request_loan(self, bank, amount):
     if not bank.is_loan_enabled():
@@ -101,7 +102,7 @@ bank = Bank()
 bank.create_account("Jhankar Mahbub","jm@gmail.com", 123, 1000)
 bank.create_account("Tasnim Safwan","ts@gmail.com", 345, 500)
 
-print("Total bank balance:", bank.total_balance)  # 0 (initial)
+print("Total bank balance:", bank.total_balance) 
 # User actions
 Jhankar = bank.get_user("Jhankar Mahbub")
 Jhankar.deposit(500)
