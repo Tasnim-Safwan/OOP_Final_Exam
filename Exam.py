@@ -1,15 +1,17 @@
 class Bank:
   def __init__(self):
     self.users = {}
+    self.email={}
     self.total_balance = 0
     self.total_loan = 0
     self.loan_enabled = True
 
   def create_account(self, name, email, password, balance):
-    if name in self.users:
-      print("Account already exists for", name)
+    if name in self.email:
+      print("Account already exists for", email)
       return
     self.users[name] = User(name, email, password,balance)
+    self.users[email]= User(name, email, password,balance)
     print("Account created successfully for", name)
 
   def get_user(self, name):
@@ -46,7 +48,6 @@ class User:
     self.transactions.append(f"Withdrawal: -{amount}")
     print(f"{amount} withdrawn successfully. Current balance: {self.balance}")
 
-
   def check_balance(self):
     print(f"Current balance: {self.balance}")
 
@@ -56,7 +57,7 @@ class User:
       return
     recipient_user = bank.get_user(recipient)
     if not recipient_user:
-      print("Invalid recipient")
+      print("Invalid")
       return
     self.balance -= amount
     recipient_user.deposit(amount)
@@ -76,7 +77,7 @@ class User:
       print("Loans are currently disabled")
       return
     if amount > 2 * self.balance:
-      print("Loan amount exceeds limit (twice your balance)")
+      print("Loan amount exceeds twice your balance")
       return
     bank.total_loan += amount
     bank.total_balance-= amount
@@ -84,22 +85,19 @@ class User:
     
     self.transactions.append(f"Loan: +{amount}")
     print(f"Loan of {amount} approved. Current balance: {self.balance}")
-    
-
     # Check for bank bankruptcy 
     if bank.total_balance - bank.total_loan < 0:
-      print("Warning: Bank is running low on funds!")
+      print("Warning: Bank is low on funds!")
 
 
-# Example usage
 bank = Bank()
 
-# Admin actions
+# Admin 
 bank.create_account("Jhankar Mahbub","jm@gmail.com", 123, 1000)
 bank.create_account("Tasnim Safwan","ts@gmail.com", 345, 500)
 
-print("Total bank balance:", bank.total_balance)  # 0 (initial)
-# User actions
+print("Total bank balance:", bank.total_balance) 
+# User 
 Jhankar = bank.get_user("Jhankar Mahbub")
 Jhankar.deposit(500)
 Jhankar.withdraw(200)
