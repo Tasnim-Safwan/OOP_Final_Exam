@@ -48,6 +48,7 @@ class User:
     self.transactions.append(f"Withdrawal: -{amount}")
     print(f"{amount} withdrawn successfully. Current balance: {self.balance}")
 
+
   def check_balance(self):
     print(f"Current balance: {self.balance}")
 
@@ -61,6 +62,7 @@ class User:
       return
     self.balance -= amount
     recipient_user.deposit(amount)
+    bank.total_balance -= amount
     self.transactions.append(f"Transfer to {recipient}: -{amount}")
     recipient_user.transactions.append(f"Transfer from {self.name}: +{amount}")
 
@@ -85,19 +87,22 @@ class User:
     
     self.transactions.append(f"Loan: +{amount}")
     print(f"Loan of {amount} approved. Current balance: {self.balance}")
+    
+
     # Check for bank bankruptcy 
     if bank.total_balance - bank.total_loan < 0:
       print("Warning: Bank is low on funds!")
 
 
+# Example usage
 bank = Bank()
 
-# Admin 
+# Admin actions
 bank.create_account("Jhankar Mahbub","jm@gmail.com", 123, 1000)
 bank.create_account("Tasnim Safwan","ts@gmail.com", 345, 500)
 
-print("Total bank balance:", bank.total_balance) 
-# User 
+print("Total bank balance:", bank.total_balance)  # 0 (initial)
+# User actions
 Jhankar = bank.get_user("Jhankar Mahbub")
 Jhankar.deposit(500)
 Jhankar.withdraw(200)
